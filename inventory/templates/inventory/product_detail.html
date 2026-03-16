@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'product_list' %}">Список товаров</a></li>
+            <li class="breadcrumb-item active">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="d-flex justify-content-between align-items-start">
+                <h1>{{ product.name }}</h1>
+                <a href="{% url 'product_update' product.pk %}" class="btn btn-outline-warning btn-sm">📝 Редактировать товар</a>
+            </div>
+            <p class="text-muted">Артикул: <span class="badge bg-secondary">{{ product.item_number }}</span></p>
+            <p><strong>Категория:</strong> {{ product.category.name|default:"Без категории" }}</p>
+            <p><strong>Минимальный порог:</strong> {{ product.min_quantity }} шт.</p>
+            <hr>
+            <h5>Описание:</h5>
+            <p>{{ product.descriptions|linebreaks|default:"Описание отсутствует" }}</p>
+        </div>
+        <div class="card mb-3 text-center">
+            <div class="card-header bg-dark text-white">QR-код товара</div>
+            <div class="card-body">
+                {% if product.qr_code %}
+                    <img src="{{ product.qr_code.url }}" alt="QR Code" class="img-fluid" style="max-width: 150px;">
+                    <p class="small text-muted mt-2">Сканируйте для быстрого доступа</p>
+                {% else %}
+                    <p class="text-muted">QR-код не сгенерирован</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card border-primary shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <span>📍 Наличие на складах</span>
+                    <a href="{% url 'warehouse_create' %}" class="btn btn-light btn-sm" title="Создать новый склад в системе">+ Склад</a>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
+                        {% for stock in product.stocks.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ stock.warehouse.name }}</strong>
+                                <br>
+                                <small class="text-muted">{{ stock.warehouse.address }}</small>
+                                <br>
+                                <a href="{% url 'warehouse_update' stock.warehouse.pk %}" class="btn btn-link btn-sm p-0 text-warning" style="font-size: 0.8rem;">изменить склад</a>
+                            </div>
+                            <span class="badge bg-primary fs-6">{{ stock.quantity }} шт.</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-center py-4">
+                            <p class="text-danger mb-2">Товара нет ни на одном складе</p>
+                            <a href="{% url 'transaction_create' %}" class="btn btn-sm btn-success">Оформить приход</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-footer bg-light">
+                    <div class="d-grid">
+                        <a href="{% url 'transaction_create' %}" class="btn btn-outline-primary btn-sm">➕ Провести операцию (Приход/Расход)</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

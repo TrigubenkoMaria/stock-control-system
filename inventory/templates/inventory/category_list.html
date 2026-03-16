@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between mb-3">
+    <h2>Категории</h2>
+    <a href="{% url 'category_create' %}" class="btn btn-primary">+ Добавить категорию</a>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in categories %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>
+                <a href="{% url 'category_update' c.pk %}" class="btn btn-sm btn-warning">Изменить</a>
+                <a href="{% url 'category_delete' c.pk %}" class="btn btn-sm btn-danger">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

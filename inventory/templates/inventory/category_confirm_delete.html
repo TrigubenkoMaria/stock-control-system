@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="alert alert-warning shadow-sm p-4">
+        <h2 class="text-danger">⚠️ Подтверждение удаления категории</h2>
+        <hr>
+        <p class="lead">Вы уверены, что хотите удалить категорию <strong>"{{ object.name }}"</strong>?</p>
+
+        <div class="alert alert-info small">
+            <strong>Примечание:</strong> Если в этой категории есть товары,
+            система может запретить удаление (сработает защита PROTECT).
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger px-4">Да, удалить категорию</button>
+            <a href="{% url 'category_list' %}" class="btn btn-secondary px-4">Отмена</a>
+        </form>
+    </div>
+{% endblock %}

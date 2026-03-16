@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Оформление операции</h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Выберите товар, склад и укажите количество для изменения остатков.</p>
+                    <hr>
+
+                    <form method="post">
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Вывод полей формы -->
+                        <div class="mb-3">
+                            <label class="form-label">Товар</label>
+                            {{ form.product }}
+                            <div class="form-text">Выберите товар из справочника.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Склад</label>
+                            {{ form.warehouse }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Тип операции</label>
+                            {{ form.transaction_type }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Количество</label>
+                            {{ form.quantity }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success">Подтвердить операцию</button>
+                            <a href="{% url 'transaction_list' %}" class="btn btn-outline-secondary">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        select, input[type="number"] {
+            display: block;
+            width: 100%;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            background-color: #fff;
+            border: 1px solid #ced4da;
+            border-radius: 0.375rem;
+        }
+    </style>
+{% endblock %}

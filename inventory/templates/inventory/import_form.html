@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Загрузка товаров из Excel</h4>
+            </div>
+            <div class="card-body">
+                <p>Выберите файл формата <strong>.xlsx</strong> для массового добавления или обновления товаров.</p>
+
+                {% if errors %}
+                    <div class="alert alert-danger">
+                        <h6>Ошибка в файле! Проверьте данные:</h6>
+                        <ul>{% for error in errors %}<li>Строка {{ error.0 }}: {{ error.1 }}</li>{% endfor %}</ul>
+                    </div>
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <input type="file" name="import_file" class="form-control" accept=".xlsx" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success">Начать импорт</button>
+                        <a href="{% url 'product_list' %}" class="btn btn-outline-secondary">Отмена</a>
+                    </div>
+                </form>
+
+                <hr>
+                <div class="alert alert-info small">
+                    <strong>Важно:</strong> Названия колонок в Excel должны быть:
+                    <br><i>name, item_number, category, min_quantity, descriptions</i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
