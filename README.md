@@ -17,5 +17,5 @@
 3. Создайте .env в корне проекта и заполните переменными окружения.
 4. Уведомления от бота: в методе `save` модели `Transaction` **раскомментируйте** блок кода, отвечающий за вызов функции `send_deficit_notification`. 
 5. Примените миграции: `python manage.py migrate`.
-6. Создайте админа: `python manage.py createsuperuse`.
+6. Создайте админа: `python manage.py createsuperuser`.
 7. Запустите сервер: `python manage.py runserver`.
